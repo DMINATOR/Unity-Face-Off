@@ -213,12 +213,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af977bb257547624eb0e2b8bd0c0c492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackgroundLayer1: {fileID: 1980952294}
-  BackgroundLayer2: {fileID: 785462027}
-  BackgroundLayer3: {fileID: 1488201655}
-  ForegroundLayer1: {fileID: 507606191}
-  ForegroundLayer2: {fileID: 367259287}
-  ForegroundLayer3: {fileID: 536388128}
+  Settings:
+  - Name: Foreground generation
+    SourceTexture: {fileID: 2800000, guid: 2c600e0a1b3a52f47a49ecd0a6722780, type: 3}
+    DestinationLayer: {fileID: 367259287}
+    GeneratePhysicsColliders: 0
 --- !u!1 &367259287
 GameObject:
   m_ObjectHideFlags: 0
