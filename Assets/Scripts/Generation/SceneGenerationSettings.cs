@@ -9,8 +9,8 @@ public class SceneGenerationSettings
     [Tooltip("Generation Name")]
     public string Name;
 
-    [Tooltip("Source Texture to be used for generation")]
-    public Texture2D SourceTexture;
+    [Tooltip("Source Material that will be assigned to Prefab")]
+    public Material SourceMaterial;
 
     [Tooltip("Destination layer will be used as generation output")]
     public GameObject DestinationLayer;

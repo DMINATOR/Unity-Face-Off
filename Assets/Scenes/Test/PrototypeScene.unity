@@ -194,8 +194,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: db750325989564987a34393247d883b4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 99f5f6716e44c964f837da094ef6d4b5, type: 3}
+  m_Color: {r: 0.61960787, g: 0.61960787, b: 0.61960787, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -297,7 +297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Settings:
   - Name: Foreground generation
-    SourceTexture: {fileID: 2800000, guid: 2c600e0a1b3a52f47a49ecd0a6722780, type: 3}
+    SourceMaterial: {fileID: 2100000, guid: de5503b50e3490846a6db09276ba0c0e, type: 2}
     DestinationLayer: {fileID: 367259287}
     GeneratePhysicsColliders: 0
 --- !u!1 &99070382

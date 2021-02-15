@@ -62,9 +62,9 @@ public class SceneGenerator : MonoBehaviour
                 throw new Exception("No destination layer is provided!");
             }
 
-            if (settings.SourceTexture == null)
+            if (settings.SourceMaterial == null)
             {
-                throw new Exception("No source texture is provided!");
+                throw new Exception("No source material is provided!");
             }
 
             // Remove all child objects
