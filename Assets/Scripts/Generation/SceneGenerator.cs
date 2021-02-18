@@ -18,18 +18,22 @@ public class SceneGenerator : MonoBehaviour
     [Tooltip("Locator")]
     public SceneGeneratorLocator Locator;
 
+    [Header("Settings")]
+    [ReadOnly]
+    [Tooltip("Settings to load TERRAIN_GENERATION_PIXELS_PER_UNITY value")]
+    public SettingsConstants.Name TERRAIN_GENERATION_PIXELS_PER_UNITY = SettingsConstants.Name.TERRAIN_GENERATION_PIXELS_PER_UNIT;
 
-    // Start is called before the first frame update
-    void Start()
+
+    [Header("Loaded Settings")]
+    [ReadOnly]
+    [Tooltip("Current size of the block for generation in Pixels (loaded from Settings)")]
+    public int TerrainGenerationPixelsPerUnit;
+
+    private void Awake()
     {
-        
+        TerrainGenerationPixelsPerUnit = SettingsController.Instance.GetValue<int>(TERRAIN_GENERATION_PIXELS_PER_UNITY);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void GenerateScene()
     {
@@ -72,7 +76,6 @@ public class SceneGenerator : MonoBehaviour
             {
                 DestroyImmediate(child.gameObject);
             }
-
         }
         catch(Exception ex)
         {

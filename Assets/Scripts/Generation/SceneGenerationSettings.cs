@@ -16,5 +16,14 @@ public class SceneGenerationSettings
     public GameObject DestinationLayer;
 
     [Header("Options")]
+
+    [Tooltip("Specifies to generate physics colliders for generated blocks")]
     public bool GeneratePhysicsColliders;
+
+    [Tooltip("Number of columns to create for terrain")]
+    public int ColumnsCount;
+
+    [Tooltip("Number of rows to create for terrain")]
+    public int RowsCount;
+
 }
