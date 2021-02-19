@@ -57,6 +57,8 @@ public class GeneratedTerrain : MonoBehaviour
         var xEdge = columnsCount / 2;
         var yEdge = rowsCount / 2;
 
+        var cntr = 0;
+
         for(var y = 0; y < rowsCount; y++)
         {
             for (var x = 0; x < columnsCount; x++)
@@ -64,7 +66,9 @@ public class GeneratedTerrain : MonoBehaviour
                 var position = new Vector3(x - xEdge, yEdge - y);
 
                 GameObject instance = Instantiate(Locator.GeneratedTerrainBlockPrefab, position, Quaternion.identity, this.transform);
-                instance.name = $"{x}:{y}";
+                var generaterTerrainBlock = instance.GetComponent<GeneratedTerrainBlock>();
+                generaterTerrainBlock.Generate($"{x}:{y}", columnsCount, rowsCount, cntr);
+                cntr++;
             }
         }
     }
