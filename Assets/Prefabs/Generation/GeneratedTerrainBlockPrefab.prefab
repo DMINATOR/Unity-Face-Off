@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1083654716326975336}
   - component: {fileID: 1083654716326975339}
+  - component: {fileID: 4931494474514551849}
   m_Layer: 0
   m_Name: GeneratedTerrainBlockPrefab
   m_TagString: Untagged
@@ -82,3 +83,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4931494474514551849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083654716326975337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f995cbdd9e845f540b4f0acba262cfed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

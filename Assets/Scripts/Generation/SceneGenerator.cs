@@ -10,29 +10,12 @@ public class SceneGenerator : MonoBehaviour
 {
     //Not exposed
 
-
     //Exposed
 
     [Header("Locator")]
 
     [Tooltip("Locator")]
     public SceneGeneratorLocator Locator;
-
-    [Header("Settings")]
-    [ReadOnly]
-    [Tooltip("Settings to load TERRAIN_GENERATION_PIXELS_PER_UNITY value")]
-    public SettingsConstants.Name TERRAIN_GENERATION_PIXELS_PER_UNITY = SettingsConstants.Name.TERRAIN_GENERATION_PIXELS_PER_UNIT;
-
-
-    [Header("Loaded Settings")]
-    [ReadOnly]
-    [Tooltip("Current size of the block for generation in Pixels (loaded from Settings)")]
-    public int TerrainGenerationPixelsPerUnit;
-
-    private void Awake()
-    {
-        TerrainGenerationPixelsPerUnit = SettingsController.Instance.GetValue<int>(TERRAIN_GENERATION_PIXELS_PER_UNITY);
-    }
 
 
     public void GenerateScene()
@@ -76,6 +59,13 @@ public class SceneGenerator : MonoBehaviour
             {
                 DestroyImmediate(child.gameObject);
             }
+
+            // Instantiate new GameObject from Prefab
+            GameObject instance = Instantiate(Locator.GeneratedTerrainPrefab, Vector3.zero, Quaternion.identity, settings.DestinationLayer.transform);
+            instance.name = Locator.GeneratedTerrainPrefab.name;
+
+            var generatedTerrain = instance.GetComponent<GeneratedTerrain>();
+            generatedTerrain.Generate(settings.ColumnsCount, settings.RowsCount);
         }
         catch(Exception ex)
         {
