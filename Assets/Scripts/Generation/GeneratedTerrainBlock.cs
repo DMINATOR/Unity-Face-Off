@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(GeneratedTerrainBlockLocator))]
@@ -44,8 +45,8 @@ public class GeneratedTerrainBlock : MonoBehaviour
     internal void Generate(string name, int columnCount, int rowCount, int cellNumber)
     {
         this.name = name;
-        var material = Locator.SpriteRenderer.material;
-        var newMaterial = new Material(material);
+
+        Material newMaterial = new Material(Locator.SpriteRenderer.sharedMaterial);
 
         // Set shader values
         newMaterial.SetFloat(SHADER_COLUMN_COUNT, columnCount);
