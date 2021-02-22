@@ -61,9 +61,14 @@ public class SceneGenerator : MonoBehaviour
                 throw new Exception("No destination layer is provided!");
             }
 
-            if (settings.SourceMaterial == null)
+            if (settings.Sprite == null)
             {
                 throw new Exception("No source material is provided!");
+            }
+
+            if (settings.Sprite == null)
+            {
+                throw new Exception("No sorting layer is defined");
             }
 
             // Remove all child objects
@@ -77,7 +82,7 @@ public class SceneGenerator : MonoBehaviour
             instance.name = Locator.GeneratedTerrainPrefab.name;
 
             var generatedTerrain = instance.GetComponent<GeneratedTerrain>();
-            generatedTerrain.Generate(settings.ColumnsCount, settings.RowsCount);
+            generatedTerrain.Generate(settings.ColumnsCount, settings.RowsCount, settings.Sprite, settings.SortingLayer);
         }
         catch(Exception ex)
         {

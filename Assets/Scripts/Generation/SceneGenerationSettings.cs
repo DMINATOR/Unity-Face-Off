@@ -9,11 +9,14 @@ public class SceneGenerationSettings
     [Tooltip("Generation Name")]
     public string Name;
 
-    [Tooltip("Source Material that will be assigned to Prefab")]
-    public Material SourceMaterial;
+    [Tooltip("Sprite to assign to Prefab material")]
+    public Sprite Sprite;
 
     [Tooltip("Destination layer will be used as generation output")]
     public GameObject DestinationLayer;
+
+    [Tooltip("Sorting Layer to set for rendering sprites")]
+    public string SortingLayer;
 
     [Header("Options")]
 

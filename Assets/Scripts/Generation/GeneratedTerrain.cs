@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(GeneratedTerrainLocator))]
@@ -35,6 +36,14 @@ public class GeneratedTerrain : MonoBehaviour
     [Tooltip("Number of rows to create for terrain")]
     public int RowsCount;
 
+    [ReadOnly]
+    [Tooltip("Sprite to use for material")]
+    public Sprite Sprite;
+
+    [ReadOnly]
+    [Tooltip("Sorting layer to set")]
+    public SortingLayer SortingLayer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,12 +56,14 @@ public class GeneratedTerrain : MonoBehaviour
         
     }
 
-    public void Generate(int columnsCount, int rowsCount)
+    public void Generate(int columnsCount, int rowsCount, Sprite sprite, string sortingLayerName)
     {
         TerrainGenerationPixelsPerUnit = SettingsController.Instance.GetValue<int>(TERRAIN_GENERATION_PIXELS_PER_UNITY);
 
         ColumnsCount = columnsCount;
         RowsCount = rowsCount;
+        Sprite = sprite;
+        SortingLayer = SortingLayer.layers.ToList().Where( l => l.name == sortingLayerName).Single();
 
         var xEdge = columnsCount / 2;
         var yEdge = rowsCount / 2;
@@ -67,7 +78,7 @@ public class GeneratedTerrain : MonoBehaviour
 
                 GameObject instance = Instantiate(Locator.GeneratedTerrainBlockPrefab, position, Quaternion.identity, this.transform);
                 var generaterTerrainBlock = instance.GetComponent<GeneratedTerrainBlock>();
-                generaterTerrainBlock.Generate($"{x}:{y}", columnsCount, rowsCount, cntr);
+                generaterTerrainBlock.Generate($"{x}:{y}", columnsCount, rowsCount, cntr, sprite, SortingLayer);
                 cntr++;
             }
         }

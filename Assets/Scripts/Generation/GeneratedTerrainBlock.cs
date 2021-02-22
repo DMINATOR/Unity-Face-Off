@@ -42,11 +42,13 @@ public class GeneratedTerrainBlock : MonoBehaviour
         
     }
 
-    internal void Generate(string name, int columnCount, int rowCount, int cellNumber)
+    internal void Generate(string name, int columnCount, int rowCount, int cellNumber, Sprite sprite, SortingLayer sortingLayer)
     {
         this.name = name;
 
         Material newMaterial = new Material(Locator.SpriteRenderer.sharedMaterial);
+        Locator.SpriteRenderer.sprite = sprite;
+        Locator.SpriteRenderer.sortingLayerID = sortingLayer.id;
 
         // Set shader values
         newMaterial.SetFloat(SHADER_COLUMN_COUNT, columnCount);
