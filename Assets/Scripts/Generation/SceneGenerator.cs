@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 [RequireComponent(typeof(SceneGeneratorLocator))]
@@ -27,6 +28,17 @@ public class SceneGenerator : MonoBehaviour
             foreach(var setting in Locator.Settings)
             {
                 GenerateLayer(setting);
+            }
+
+            // Mark changes as permanent
+            var activeScene = EditorSceneManager.GetActiveScene();
+            if( EditorSceneManager.MarkSceneDirty(activeScene))
+            {
+                Debug.Log($"Scene {activeScene.name} marked as Dirty");
+            }
+            else
+            {
+                Debug.Log($"Scene {activeScene.name} failed to be marked as Dirty");
             }
 
             Debug.Log("Generation finished");
