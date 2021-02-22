@@ -50,3 +50,15 @@ TagManager:
   - name: Background 3
     uniqueID: 668222233
     locked: 0
+  - name: -- Middle --
+    uniqueID: 2583761243
+    locked: 0
+  - name: Foreground 1
+    uniqueID: 1728329873
+    locked: 0
+  - name: Foreground 2
+    uniqueID: 529429341
+    locked: 0
+  - name: Foreground 3
+    uniqueID: 2224938739
+    locked: 0
