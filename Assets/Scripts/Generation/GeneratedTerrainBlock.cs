@@ -47,6 +47,7 @@ public class GeneratedTerrainBlock : MonoBehaviour
         this.name = name;
 
         Locator.PolygonCollider.enabled = generateColliders;
+        Locator.RigidBody.simulated = generateColliders;
 
         Material newMaterial = new Material(Locator.SpriteRenderer.sharedMaterial);
         Locator.SpriteRenderer.sprite = sprite;

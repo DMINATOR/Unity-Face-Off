@@ -9,4 +9,7 @@ public class GeneratedTerrainBlockLocator : MonoBehaviour
 
     [Tooltip("Polygon collider to use for physics")]
     public PolygonCollider2D PolygonCollider;
+
+    [Tooltip("Associated rigidbody")]
+    public Rigidbody2D RigidBody;
 }
