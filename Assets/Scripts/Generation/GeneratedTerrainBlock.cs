@@ -60,5 +60,19 @@ public class GeneratedTerrainBlock : MonoBehaviour
 
         // Set new instance
         Locator.SpriteRenderer.material = newMaterial;
+
+        // Add it, after sprite is set
+        if( generateColliders )
+        {
+            var points = new Vector2[]
+            {
+                new Vector2( -0.3f, -0.3f ),
+                new Vector2( 0.3f, -0.3f ),
+                new Vector2( 0.3f, 0.3f ),
+                new Vector2( -0.3f, 0.3f )
+            };
+            
+            Locator.PolygonCollider.SetPath(0, points);
+        }
     }
 }
