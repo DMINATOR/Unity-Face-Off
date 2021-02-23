@@ -82,7 +82,7 @@ public class SceneGenerator : MonoBehaviour
             instance.name = Locator.GeneratedTerrainPrefab.name;
 
             var generatedTerrain = instance.GetComponent<GeneratedTerrain>();
-            generatedTerrain.Generate(settings.ColumnsCount, settings.RowsCount, settings.Sprite, settings.SortingLayer);
+            generatedTerrain.Generate(settings);
         }
         catch(Exception ex)
         {

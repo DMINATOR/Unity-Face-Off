@@ -42,9 +42,11 @@ public class GeneratedTerrainBlock : MonoBehaviour
         
     }
 
-    internal void Generate(string name, int columnCount, int rowCount, int cellNumber, Sprite sprite, SortingLayer sortingLayer)
+    internal void Generate(string name, int columnCount, int rowCount, int cellNumber, Sprite sprite, SortingLayer sortingLayer, bool generateColliders)
     {
         this.name = name;
+
+        Locator.PolygonCollider.enabled = generateColliders;
 
         Material newMaterial = new Material(Locator.SpriteRenderer.sharedMaterial);
         Locator.SpriteRenderer.sprite = sprite;

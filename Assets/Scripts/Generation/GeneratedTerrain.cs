@@ -56,29 +56,29 @@ public class GeneratedTerrain : MonoBehaviour
         
     }
 
-    public void Generate(int columnsCount, int rowsCount, Sprite sprite, string sortingLayerName)
+    public void Generate(SceneGenerationSettings settings)
     {
         TerrainGenerationPixelsPerUnit = SettingsController.Instance.GetValue<int>(TERRAIN_GENERATION_PIXELS_PER_UNITY);
 
-        ColumnsCount = columnsCount;
-        RowsCount = rowsCount;
-        Sprite = sprite;
-        SortingLayer = SortingLayer.layers.ToList().Where( l => l.name == sortingLayerName).Single();
+        ColumnsCount = settings.ColumnsCount;
+        RowsCount = settings.RowsCount;
+        Sprite = settings.Sprite;
+        SortingLayer = SortingLayer.layers.ToList().Where( l => l.name == settings.SortingLayer).Single();
 
-        var xEdge = columnsCount / 2;
-        var yEdge = rowsCount / 2;
+        var xEdge = settings.ColumnsCount / 2;
+        var yEdge = settings.RowsCount / 2;
 
         var cntr = 0;
 
-        for(var y = 0; y < rowsCount; y++)
+        for(var y = 0; y < settings.RowsCount; y++)
         {
-            for (var x = 0; x < columnsCount; x++)
+            for (var x = 0; x < settings.ColumnsCount; x++)
             {
                 var position = new Vector3(x - xEdge, yEdge - y);
 
                 GameObject instance = Instantiate(Locator.GeneratedTerrainBlockPrefab, position, Quaternion.identity, this.transform);
                 var generaterTerrainBlock = instance.GetComponent<GeneratedTerrainBlock>();
-                generaterTerrainBlock.Generate($"{x}:{y}", columnsCount, rowsCount, cntr, sprite, SortingLayer);
+                generaterTerrainBlock.Generate($"{x}:{y}", ColumnsCount, RowsCount, cntr, Sprite, SortingLayer, settings.GeneratePhysicsColliders);
                 cntr++;
             }
         }
