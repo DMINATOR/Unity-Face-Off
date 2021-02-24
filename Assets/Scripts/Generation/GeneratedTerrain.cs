@@ -17,17 +17,6 @@ public class GeneratedTerrain : MonoBehaviour
     [Tooltip("Locator")]
     public GeneratedTerrainLocator Locator;
 
-    [Header("Settings")]
-    [ReadOnly]
-    [Tooltip("Settings to load TERRAIN_GENERATION_PIXELS_PER_UNITY value")]
-    public SettingsConstants.Name TERRAIN_GENERATION_PIXELS_PER_UNITY = SettingsConstants.Name.TERRAIN_GENERATION_PIXELS_PER_UNIT;
-
-
-    [Header("Loaded Settings")]
-    [ReadOnly]
-    [Tooltip("Current size of the block for generation in Pixels (loaded from Settings)")]
-    public int TerrainGenerationPixelsPerUnit;
-
     [Tooltip("Number of columns to create for terrain")]
     [ReadOnly]
     public int ColumnsCount;
@@ -57,9 +46,7 @@ public class GeneratedTerrain : MonoBehaviour
     }
 
     public void Generate(SceneGenerationSettings settings)
-    {
-        TerrainGenerationPixelsPerUnit = SettingsController.Instance.GetValue<int>(TERRAIN_GENERATION_PIXELS_PER_UNITY);
-
+    { 
         ColumnsCount = settings.ColumnsCount;
         RowsCount = settings.RowsCount;
         Sprite = settings.Sprite;
