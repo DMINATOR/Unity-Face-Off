@@ -62,3 +62,6 @@ TagManager:
   - name: Foreground 3
     uniqueID: 2224938739
     locked: 0
+  - name: Foreground Dynamic
+    uniqueID: 402746719
+    locked: 0
