@@ -8,6 +8,8 @@ public class UserClickOnScreenCommand : ICommand
     Vector3 _mousePosition;
     Tilemap _tileMap;
 
+    private Vector3Int previousPosition;
+
     /// <summary>
     /// Clicks on screen and selects tile from a map that was clicked on
     /// </summary>
@@ -25,10 +27,15 @@ public class UserClickOnScreenCommand : ICommand
         Debug.Log(string.Format($"Mouse {_mousePosition.x}, {_mousePosition.y} -> {worldPoint.x},{worldPoint.y}"));
 
         // Get a cell on a tile map
-        Vector3Int coordinate = _tileMap.WorldToCell(worldPoint);
-        var tile = _tileMap.GetTile(coordinate);
+        Vector3Int currentPosition = _tileMap.WorldToCell(worldPoint);
+        var currentTile = _tileMap.GetTile(currentPosition);
 
-        Debug.Log($"Cell [{coordinate}] -> Tile [{tile?.name}]");
+        Debug.Log($"Cell [{currentPosition}] -> Tile [{currentTile?.name}]");
+
+        if( currentTile != null )
+        {
+            _tileMap.SetTile(currentPosition, null);
+        }
     }
 
     public void Undo()
