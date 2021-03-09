@@ -947,6 +947,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelSketchOff_ForeGround_1_Pallet
       objectReference: {fileID: 0}
+    - target: {fileID: 1248292277676129699, guid: cb590060d0333324d9838d49fde430fa, type: 3}
+      propertyPath: m_DetectChunkCullingBounds
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8215728050289336853, guid: cb590060d0333324d9838d49fde430fa, type: 3}
       propertyPath: m_BackSortingLayer
       value: 0
