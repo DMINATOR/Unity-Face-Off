@@ -47,7 +47,7 @@ public class UserClickOnScreenCommand : ICommand
 
             _tileMap.SetTile(currentPosition, newTile);
 
-            collider.ProcessTilemapChanges();
+            //collider.ProcessTilemapChanges();
         }
     }
 
