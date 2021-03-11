@@ -46,11 +46,12 @@ public class UserClickOnScreenCommand : ICommand
            // var newSprite = CreateNewSpriteTexture(sprite, renderer);
             var newTile = ScriptableObject.CreateInstance<BasicTile>();
 
+            newTile.SpriteOverride = newSprite;
             newTile.sprite = newSprite;
 
             _tileMap.SetTile(currentPosition, newTile);
 
-            //collider.ProcessTilemapChanges();
+            collider.ProcessTilemapChanges();
         }
     }
 
@@ -107,11 +108,19 @@ public class UserClickOnScreenCommand : ICommand
     private Sprite CreateNewSprite2(Sprite sprite)
     {
         Texture2D tex = sprite.texture;
-        var tex2 = new Texture2D(1, 1);
-        tex2.SetPixel(0, 0, Color.white);
+        var tex2 = new Texture2D(4, 4);
+
+        for (var x = 0; x < tex2.width; x++)
+        {
+            for (var y = 0; y < tex2.height; y++)
+            {
+                tex2.SetPixel(x, y, Color.gray);
+            }
+        }
+      
         tex2.Apply();
 
-        var newSprite = Sprite.Create(tex2, new Rect(0, 0, tex2.width, tex2.height), new Vector2(0.5f, 0.5f), 1.0f);
+        var newSprite = Sprite.Create(tex2, new Rect(0, 0, tex2.width, tex2.height), new Vector2(0.5f, 0.5f), 4.0f);
 
         //Texture2D tex2 = new Texture2D(tex.width, tex.height);
         //Color[] colors = tex.GetPixels(0, 0, tex.width, tex.height);

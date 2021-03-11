@@ -11,11 +11,18 @@ public class BasicTile : Tile
 {
     public Sprite SpriteOverride;
 
-    //public override void GetTileData(Vector3Int location, ITilemap tilemap, ref TileData tileData)
-    //{
-    //    Debug.Log($"Sprite override triggered");
-    //    tileData.sprite = SpriteOverride;
-    //}
+    public override void GetTileData(Vector3Int location, ITilemap tilemap, ref TileData tileData)
+    {
+        Debug.Log($"Sprite override triggered");
+        tileData.sprite = SpriteOverride;
+        tileData.colliderType = ColliderType.Sprite;
+        tileData.color = Color.gray;
+    }
+
+    public override void RefreshTile(Vector3Int position, ITilemap tilemap)
+    {
+        tilemap.RefreshTile(position);
+    }
 
     //public override void GetTileData(Vector3Int location, ITilemap tilemap, ref TileData tileData)
     //{
