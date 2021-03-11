@@ -42,7 +42,7 @@ public class UserClickOnScreenCommand : ICommand
             //ModifyTexture(sprite);
             //CreateOrUpdateRenderTexture(sprite, renderer);
 
-            var newSprite = CreateNewSprite2(sprite);
+            var newSprite = CreateNewSprite3(sprite);
            // var newSprite = CreateNewSpriteTexture(sprite, renderer);
             var newTile = ScriptableObject.CreateInstance<BasicTile>();
 
@@ -122,11 +122,32 @@ public class UserClickOnScreenCommand : ICommand
 
         var newSprite = Sprite.Create(tex2, new Rect(0, 0, tex2.width, tex2.height), new Vector2(0.5f, 0.5f), 4.0f);
 
-        //Texture2D tex2 = new Texture2D(tex.width, tex.height);
-        //Color[] colors = tex.GetPixels(0, 0, tex.width, tex.height);
-        //tex2.SetPixels(colors);
-        //tex2.Apply();
-        //var newSprite = Sprite.Create(tex2, sprite.rect, sprite.pivot, 1.0f);
+        return newSprite;
+    }
+
+    private Sprite CreateNewSprite3(Sprite sprite)
+    {
+        Texture2D tex = sprite.texture;
+        var tex2 = new Texture2D((int)sprite.pixelsPerUnit, (int)sprite.pixelsPerUnit);
+
+        for (var x = 0; x < tex2.width; x++)
+        {
+            for (var y = 0; y < tex2.height; y++)
+            {
+                var color = tex.GetPixel((int)(x + sprite.textureRect.x), (int)(y + sprite.textureRect.y));
+                
+                if( color.a == 1.0f )
+                {
+                    color = Color.black;
+                }
+
+                tex2.SetPixel(x, y, color);
+            }
+        }
+
+        tex2.Apply();
+
+        var newSprite = Sprite.Create(tex2, new Rect(0, 0, tex2.width, tex2.height), new Vector2(0.5f, 0.5f), sprite.pixelsPerUnit);
 
         return newSprite;
     }
