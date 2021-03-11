@@ -11,11 +11,11 @@ public class BasicTile : Tile
 {
     public Sprite SpriteOverride;
 
-    public override void GetTileData(Vector3Int location, ITilemap tilemap, ref TileData tileData)
-    {
-        Debug.Log($"Sprite override triggered");
-        //tileData.sprite = SpriteOverride;
-    }
+    //public override void GetTileData(Vector3Int location, ITilemap tilemap, ref TileData tileData)
+    //{
+    //    Debug.Log($"Sprite override triggered");
+    //    tileData.sprite = SpriteOverride;
+    //}
 
     //public override void GetTileData(Vector3Int location, ITilemap tilemap, ref TileData tileData)
     //{
