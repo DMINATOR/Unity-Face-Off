@@ -36,22 +36,18 @@ public class UserClickOnScreenCommand : ICommand
         if( currentTile != null )
         {
             var sprite = _tileMap.GetSprite(currentPosition);
-            var renderer = _tileMap.GetComponent<TilemapRenderer>();
-            var collider = _tileMap.GetComponent<TilemapCollider2D>();
+            //var renderer = _tileMap.GetComponent<TilemapRenderer>();
+            //var collider = _tileMap.GetComponent<TilemapCollider2D>();
 
-            //ModifyTexture(sprite);
-            //CreateOrUpdateRenderTexture(sprite, renderer);
-
-            var newSprite = CreateNewSprite3(sprite);
-           // var newSprite = CreateNewSpriteTexture(sprite, renderer);
+            var newSprite = CreateNewSprite(sprite);
             var newTile = ScriptableObject.CreateInstance<BasicTile>();
 
-            newTile.SpriteOverride = newSprite;
             newTile.sprite = newSprite;
 
             _tileMap.SetTile(currentPosition, newTile);
+            
 
-            collider.ProcessTilemapChanges();
+            //collider.ProcessTilemapChanges();
         }
     }
 
@@ -60,72 +56,7 @@ public class UserClickOnScreenCommand : ICommand
         throw new System.NotImplementedException();
     }
 
-    private void ModifyTexture(Sprite sprite)
-    {
-        var textureToModify = (Texture2D)sprite.texture;
-
-        // Modify texture here
-        var pointX = sprite.rect.xMin;
-        var pointY = sprite.rect.yMin;
-
-        var previousColor = textureToModify.GetPixel((int)pointX, (int)pointY);
-        var newColor = Color.white;
-
-        Debug.Log($"{pointX},{pointY} [{previousColor}] -> [{newColor}]");
-
-        for (var x = 0; x < sprite.rect.xMax; x++)
-        {
-            for (var y = 0; y < sprite.rect.yMax; y++)
-            {
-                textureToModify.SetPixel(
-                    (int)(pointX + x),
-                    (int)(pointY + y),
-                    newColor);
-            }
-        }
-
-        textureToModify.Apply();
-    }
-
     private Sprite CreateNewSprite(Sprite sprite)
-    {
-        Texture2D tex = sprite.texture;
-        var tex2 = new Texture2D(1, 1);
-        tex2.SetPixel(0, 0, Color.white);
-        tex2.Apply();
-
-        var newSprite = Sprite.Create(tex2, new Rect(0, 0, tex2.width, tex2.height), new Vector2(0.0f, 0.0f), 1.0f);
-
-        //Texture2D tex2 = new Texture2D(tex.width, tex.height);
-        //Color[] colors = tex.GetPixels(0, 0, tex.width, tex.height);
-        //tex2.SetPixels(colors);
-        //tex2.Apply();
-        //var newSprite = Sprite.Create(tex2, sprite.rect, sprite.pivot, 1.0f);
-
-        return newSprite;
-    }
-
-    private Sprite CreateNewSprite2(Sprite sprite)
-    {
-        Texture2D tex = sprite.texture;
-        var tex2 = new Texture2D(4, 4);
-
-        for (var x = 0; x < tex2.width; x++)
-        {
-            for (var y = 0; y < tex2.height; y++)
-            {
-                tex2.SetPixel(x, y, Color.gray);
-            }
-        }
-      
-        tex2.Apply();
-
-        var newSprite = Sprite.Create(tex2, new Rect(0, 0, tex2.width, tex2.height), new Vector2(0.5f, 0.5f), 4.0f);
-
-        return newSprite;
-    }
-
-    private Sprite CreateNewSprite3(Sprite sprite)
     {
         Texture2D tex = sprite.texture;
         var tex2 = new Texture2D((int)sprite.pixelsPerUnit, (int)sprite.pixelsPerUnit);
@@ -135,11 +66,11 @@ public class UserClickOnScreenCommand : ICommand
             for (var y = 0; y < tex2.height; y++)
             {
                 var color = tex.GetPixel((int)(x + sprite.textureRect.x), (int)(y + sprite.textureRect.y));
-                
-                if( color.a == 1.0f )
-                {
-                    color = Color.black;
-                }
+                color.a = 1.0f;
+                //if( color.a >= 0.8f )
+                //{
+                //    color = Color.black;
+                //}
 
                 tex2.SetPixel(x, y, color);
             }
