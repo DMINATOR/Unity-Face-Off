@@ -341,7 +341,7 @@ SpriteRenderer:
   m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: 4adeaf2d2b1c7417e89f026626d8264f, type: 3}
-  m_Color: {r: 0.5119784, g: 0.8396226, b: 0.24951048, a: 1}
+  m_Color: {r: 0.5119784, g: 0.8396226, b: 0.24951048, a: 0.34901962}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -364,6 +364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1388200241}
+  OldPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &367259287
 GameObject:
   m_ObjectHideFlags: 0
