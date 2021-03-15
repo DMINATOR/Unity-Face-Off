@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -98,7 +97,7 @@ public class UserClickOnScreenCommand : ICommand
         var tile = _tileMap.GetTile(tilePosition);
         var sprite = _tileMap.GetSprite(tilePosition);
 
-        var newSprite = CreateNewSprite(sprite);
+        var newSprite = CreateNewSpriteAndCutCircleAreaOut(sprite, tilePosition);
         var newTile = ScriptableObject.CreateInstance<BasicTile>();
 
         newTile.sprite = newSprite;
@@ -109,6 +108,66 @@ public class UserClickOnScreenCommand : ICommand
     public void Undo()
     {
         throw new System.NotImplementedException();
+    }
+
+    private Sprite CreateNewSpriteAndCutCircleAreaOut(Sprite sprite, Vector3Int tilePosition)
+    {
+        Texture2D tex = sprite.texture;
+        var tex2 = new Texture2D((int)sprite.pixelsPerUnit, (int)sprite.pixelsPerUnit);
+
+        var newColor = new Color(
+            UnityEngine.Random.Range(0.2f, 1),
+            UnityEngine.Random.Range(0.2f, 1),
+            UnityEngine.Random.Range(0.2f, 1),
+            1.0f);
+
+        var tileWorldPosition = _tileMap.CellToWorld(tilePosition);
+        var centerCircleRadius = _bounds.extents.x;
+
+        var multX = 1.0f / tex2.width;
+        var multY = 1.0f / tex2.height;
+
+        for (var x = 0; x < tex2.width; x++)
+        {
+            for (var y = 0; y < tex2.height; y++)
+            {
+                var color = tex.GetPixel((int)(x + sprite.textureRect.x), (int)(y + sprite.textureRect.y));
+                //color.a = 1.0f;
+                //if( color.a >= 0.8f )
+                //{
+                //    color = Color.black;
+                //}
+
+                var localPoint = new Vector3(multX * x, multY * y);
+                var worldPosition = localPoint + tileWorldPosition;
+
+                if( _bounds.Contains(worldPosition))
+                {
+                    var distance = Vector3.Distance(_bounds.center, worldPosition);
+
+                    // Only if we are within a circle magnitude
+                    if ( distance <= centerCircleRadius)
+                    {
+                        // Specific color
+                        //tex2.SetPixel(x, y, Color.black);
+                        //newColor.a = 0.0f;
+                        tex2.SetPixel(x, y, new Color(0,0,0,0));
+                        continue;
+                    }
+                }
+
+                //tex2.SetPixel(x, y, color);
+
+                // Random color
+                tex2.SetPixel(x, y, newColor);
+            }
+        }
+
+        tex2.Apply();
+
+        var newSprite = Sprite.Create(tex2, new Rect(0, 0, tex2.width, tex2.height), new Vector2(0.5f, 0.5f), sprite.pixelsPerUnit);
+
+        return newSprite;
     }
 
     private Sprite CreateNewSprite(Sprite sprite)
