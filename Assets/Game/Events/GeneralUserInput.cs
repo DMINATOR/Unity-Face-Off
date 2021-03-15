@@ -8,6 +8,7 @@ public class GeneralUserInput : MonoBehaviour
     // Tilemap that will be affected
     public Tilemap tilemap;
     public Vector3 OldPosition;
+    public SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,7 @@ public class GeneralUserInput : MonoBehaviour
         // Trigger event to destroy tiles
         if (Input.GetMouseButtonDown(0))
         {
-            var commandDown = new UserClickOnScreenCommand(Input.mousePosition, tilemap);
+            var commandDown = new UserClickOnScreenCommand(Input.mousePosition, spriteRenderer.bounds, tilemap);
             commandDown.Execute();
         }
     }

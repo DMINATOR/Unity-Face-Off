@@ -294,7 +294,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322931812}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4, y: 1.55, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1286690099}
@@ -365,6 +365,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1388200241}
   OldPosition: {x: 0, y: 0, z: 0}
+  spriteRenderer: {fileID: 322931814}
 --- !u!1 &367259287
 GameObject:
   m_ObjectHideFlags: 0

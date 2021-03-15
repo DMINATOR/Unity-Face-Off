@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -8,6 +9,7 @@ public class UserClickOnScreenCommand : ICommand
 {
     Vector3 _mousePosition;
     Tilemap _tileMap;
+    Bounds _bounds;
 
     private Vector3Int previousPosition;
 
@@ -16,39 +18,92 @@ public class UserClickOnScreenCommand : ICommand
     /// </summary>
     /// <param name="mousePosition">Input.mousePosition</param>
     /// <param name="tilemap">Tilemap to perform changes on</param>
-    public UserClickOnScreenCommand(Vector3 mousePosition, Tilemap tilemap)
+    public UserClickOnScreenCommand(Vector3 mousePosition, Bounds bounds, Tilemap tilemap)
     {
         _mousePosition = mousePosition;
         _tileMap = tilemap;
+        _bounds = bounds;
+    }
+
+    private List<Vector3Int> GetTilePositions(Bounds bounds)
+    {
+        var topLeftTileCell = _tileMap.WorldToCell(new Vector3(bounds.center.x - bounds.extents.x, bounds.center.y - bounds.extents.y));
+        var bottomRightTileCell = _tileMap.WorldToCell(new Vector3(bounds.center.x + bounds.extents.x, bounds.center.y + bounds.extents.y));
+
+        var results = new HashSet<Vector3Int>();
+
+        for (var x = topLeftTileCell.x; x <= bottomRightTileCell.x; x++)
+        {
+            for (var y = topLeftTileCell.y; y <= bottomRightTileCell.y; y++)
+            {
+                var position = new Vector3Int(x, y, 0);
+                var tile = _tileMap.GetTile(position);
+                if ( tile != null )
+                {
+                    results.Add(position);
+                }
+            }
+        }
+
+        return results.ToList();
     }
 
     public void Execute()
     {
         var worldPoint = Camera.main.ScreenToWorldPoint(_mousePosition);
-        Debug.Log(string.Format($"Mouse {_mousePosition.x}, {_mousePosition.y} -> {worldPoint.x},{worldPoint.y}"));
+
+        var tilePositions = GetTilePositions(_bounds);
+        //var tiles = _tileMap.GetTilesBlock(tileBounds);
+
+        Debug.Log(string.Format($"Mouse {_mousePosition.x}; {_mousePosition.y} -> {worldPoint.x}; {worldPoint.y}"));
+        //Debug.Log($"Bounds {_bounds} -> {tileBounds}");
+        Debug.Log($"Tiles: {tilePositions}");
+
+        ShowSelectedTiles(tilePositions);
 
         // Get a cell on a tile map
-        Vector3Int currentPosition = _tileMap.WorldToCell(worldPoint);
-        var currentTile = _tileMap.GetTile(currentPosition);
+        //Vector3Int currentPosition = _tileMap.WorldToCell(worldPoint);
+        //var currentTile = _tileMap.GetTile(currentPosition);
 
-        Debug.Log($"Cell [{currentPosition}] -> Tile [{currentTile?.name}]");
+        //Debug.Log($"Cell [{currentPosition}] -> Tile [{currentTile?.name}]");
 
-        if( currentTile != null )
+        //if( currentTile != null )
+        //{
+        //    var sprite = _tileMap.GetSprite(currentPosition);
+        //    //var renderer = _tileMap.GetComponent<TilemapRenderer>();
+        //    //var collider = _tileMap.GetComponent<TilemapCollider2D>();
+
+        //    var newSprite = CreateNewSprite(sprite);
+        //    var newTile = ScriptableObject.CreateInstance<BasicTile>();
+
+        //    newTile.sprite = newSprite;
+
+        //    _tileMap.SetTile(currentPosition, newTile);
+
+
+        //    //collider.ProcessTilemapChanges();
+        //}
+    }
+
+    private void ShowSelectedTiles(List<Vector3Int> tilePositions)
+    {
+        foreach(var tilePosition in tilePositions)
         {
-            var sprite = _tileMap.GetSprite(currentPosition);
-            //var renderer = _tileMap.GetComponent<TilemapRenderer>();
-            //var collider = _tileMap.GetComponent<TilemapCollider2D>();
-
-            var newSprite = CreateNewSprite(sprite);
-            var newTile = ScriptableObject.CreateInstance<BasicTile>();
-
-            newTile.sprite = newSprite;
-
-            _tileMap.SetTile(currentPosition, newTile);
-            
-
-            //collider.ProcessTilemapChanges();
+            ShowSelectedTile(tilePosition);
         }
+    }
+
+    private void ShowSelectedTile(Vector3Int tilePosition)
+    {
+        var tile = _tileMap.GetTile(tilePosition);
+        var sprite = _tileMap.GetSprite(tilePosition);
+
+        var newSprite = CreateNewSprite(sprite);
+        var newTile = ScriptableObject.CreateInstance<BasicTile>();
+
+        newTile.sprite = newSprite;
+
+        _tileMap.SetTile(tilePosition, newTile);
     }
 
     public void Undo()
@@ -61,6 +116,12 @@ public class UserClickOnScreenCommand : ICommand
         Texture2D tex = sprite.texture;
         var tex2 = new Texture2D((int)sprite.pixelsPerUnit, (int)sprite.pixelsPerUnit);
 
+        var newColor = new Color(
+            UnityEngine.Random.Range(0.2f, 1),
+            UnityEngine.Random.Range(0.2f, 1),
+            UnityEngine.Random.Range(0.2f, 1),
+            1.0f);
+
         for (var x = 0; x < tex2.width; x++)
         {
             for (var y = 0; y < tex2.height; y++)
@@ -72,7 +133,7 @@ public class UserClickOnScreenCommand : ICommand
                 //    color = Color.black;
                 //}
 
-                tex2.SetPixel(x, y, color);
+                tex2.SetPixel(x, y, newColor);
             }
         }
 
@@ -254,52 +315,4 @@ public class UserClickOnScreenCommand : ICommand
 
         textureToModify.Apply();
     }
-
-    //private Texture2D GetTextureToModify(TilemapRenderer renderer)
-    //{
-    //    var isMaskTextureCreated = renderer.material.GetFloat("MaskTextureCreated"); 
-    //    var textureToModify = (Texture2D)renderer.material.GetTexture("_MainTex");
-
-    //    if (isMaskTextureCreated != 1.0f)
-    //    {
-    //        // Modify source texture
-    //        Debug.Log($"Creating Modified texture...");
-
-    //        if (textureToModify == null)
-    //        {
-    //            throw new Exception("No source texture detected!");
-    //        }
-    //        else
-    //        {
-    //            // Create new texture
-    //            var newTextureToModify = new Texture2D(textureToModify.width, textureToModify.height, textureToModify.format, false, false)
-    //            {
-    //                alphaIsTransparency = textureToModify.alphaIsTransparency,
-    //                anisoLevel = textureToModify.anisoLevel,
-    //                filterMode = textureToModify.filterMode,
-    //                hideFlags = textureToModify.hideFlags,
-    //                minimumMipmapLevel = textureToModify.minimumMipmapLevel,
-    //                mipMapBias = textureToModify.mipMapBias,
-    //                requestedMipmapLevel = textureToModify.requestedMipmapLevel,
-    //                wrapMode = textureToModify.wrapMode,
-    //                wrapModeU = textureToModify.wrapModeU,
-    //                wrapModeV = textureToModify.wrapModeV,
-    //                wrapModeW = textureToModify.wrapModeW
-    //            };
-
-    //            var textureData = textureToModify.GetPixelData<Color>(0);
-    //            newTextureToModify.SetPixelData(textureData, 0);
-
-    //            Debug.Log($"... created");
-
-    //            renderer.material.SetTexture("_MainTex", newTextureToModify);
-
-    //            renderer.material.SetFloat("MaskTextureCreated", 1.0f);
-
-    //            textureToModify = newTextureToModify;
-    //        }
-    //    }
-
-    //    return textureToModify;
-    //}
 }
