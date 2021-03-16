@@ -113,7 +113,21 @@ public class UserClickOnScreenCommand : ICommand
     private Sprite CreateNewSpriteAndCutCircleAreaOut(Sprite sprite, Vector3Int tilePosition)
     {
         Texture2D tex = sprite.texture;
-        var tex2 = new Texture2D((int)sprite.pixelsPerUnit, (int)sprite.pixelsPerUnit);
+
+        var tex2 = new Texture2D((int)sprite.pixelsPerUnit, (int)sprite.pixelsPerUnit, tex.format, false, false)
+        {
+            alphaIsTransparency = tex.alphaIsTransparency,
+            anisoLevel = tex.anisoLevel,
+            filterMode = tex.filterMode,
+            hideFlags = tex.hideFlags,
+            minimumMipmapLevel = tex.minimumMipmapLevel,
+            mipMapBias = tex.mipMapBias,
+            requestedMipmapLevel = tex.requestedMipmapLevel,
+            wrapMode = tex.wrapMode,
+            wrapModeU = tex.wrapModeU,
+            wrapModeV = tex.wrapModeV,
+            wrapModeW = tex.wrapModeW
+        };
 
         var newColor = new Color(
             UnityEngine.Random.Range(0.2f, 1),
