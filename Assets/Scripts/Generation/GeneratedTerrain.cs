@@ -25,7 +25,7 @@ public class GeneratedTerrain : MonoBehaviour
     [Tooltip("Number of rows to create for terrain")]
     public int RowsCount;
 
-    [ReadOnly]
+    //[ReadOnly]
     [Tooltip("Sprite to use for material")]
     public Sprite Sprite;
 
