@@ -97,12 +97,90 @@ public class UserClickOnScreenCommand : ICommand
         var tile = _tileMap.GetTile(tilePosition);
         var sprite = _tileMap.GetSprite(tilePosition);
 
+        var tilemapCollider = _tileMap.GetComponent<TilemapCollider2D>();
+        var tilemapRenderer = _tileMap.GetComponent<TilemapRenderer>();
         var newSprite = CreateNewSpriteAndCutCircleAreaOut(sprite, tilePosition);
         var newTile = ScriptableObject.CreateInstance<BasicTile>();
 
-        newTile.sprite = newSprite;
+        //var texture = newSprite.texture;
+        //TextureScale.Bilinear(texture, 512, 512);
 
+        //newSprite.texture.Resize(512, 512, newSprite.texture.format, false);
+        //newSprite.texture.Apply();
+
+        //var shape = new List<Vector2>();
+        //var physicsShape = newSprite.GetPhysicsShape(0, shape);
+        //TextureScale.Bilinear(texture, 128, 128);
+        //var shapes = new List<Vector2[]>();
+        //shapes.Add(shape.ToArray());
+        //newSprite.OverridePhysicsShape(shapes);
+
+        //newSprite.texture.Resize(128, 128);
+        //var shapes = new List<Vector2[]>();
+        //shapes.Add(shape.ToArray());
+        //newSprite.OverridePhysicsShape(shapes);
+
+        //TextureScale.Bilinear(newSprite.texture, 512, 512);
+        //var vertices512 = newSprite.vertices;
+        //TextureScale.Bilinear(newSprite.texture, 128, 128);
+        //var vertices128 = newSprite.vertices;
+
+        //newSprite.OverridePhysicsShape(new List<Vector2[]> {
+        //new Vector2[] { new Vector2(0, 0), new Vector2(newSprite.rect.width, 0), new Vector2(newSprite.rect.width, newSprite.rect.height), new Vector2(0, newSprite.rect.height) },
+        //});
+        TraceSprite(newSprite);
+        newTile.sprite = newSprite;
+ 
         _tileMap.SetTile(tilePosition, newTile);
+    }
+
+    public void TraceSprite(Sprite sprite)
+    {
+        var gapLength = 3U;
+        var product = 1f; //  "Product for optimizing the outline based on angle. 1 means no optimization. This value should be kept pretty high if you want to maintain round shapes. Note that some points (e.g. outer angles) are never optimized."
+        var tolerance = 0f; // A higher value results in a simpler line (less points). A positive value close to zero results in a line with little to no reduction. A value of zero or less has no effect.
+        ContourTracer tracer = new ContourTracer();
+        Texture2D targetTex = sprite.texture;
+        tracer.Trace(targetTex, sprite.pivot, sprite.pixelsPerUnit / 10, gapLength, product);
+
+        var path = new List<Vector2>();
+        var points = new List<Vector2>();
+        var pointsList = new List<Vector2[]>();
+
+        for (int i = 0; i < tracer.pathCount; i++)
+        {
+            tracer.GetPath(i, ref path);
+            LineUtility.Simplify(path, tolerance, points);
+
+            //var scaledPoints = new List<Vector2>();
+            //foreach(var point in points)
+            //{
+            //    scaledPoints.Add(new Vector2(point.x * 10, point.y * 10));
+            //}
+
+            pointsList.Add(points.ToArray());
+        }
+
+        sprite.OverridePhysicsShape(pointsList);
+
+        //var polygonCollider2D = gameObject.GetComponent<PolygonCollider2D>();
+        //if (!polygonCollider2D) polygonCollider2D = gameObject.AddComponent<PolygonCollider2D>();
+
+        //polygonCollider2D.pathCount = tracer.pathCount;
+        //for (int i = 0; i < polygonCollider2D.pathCount; i++)
+        //{
+        //    tracer.GetPath(i, ref path);
+        //    LineUtility.Simplify(path, tolerance, points);
+        //    if (points.Count < 3)
+        //    {
+        //        polygonCollider2D.pathCount--;
+        //        i--;
+        //    }
+        //    else
+        //    {
+        //        polygonCollider2D.SetPath(i, points);
+        //    }
+        //}
     }
 
     public void Undo()
