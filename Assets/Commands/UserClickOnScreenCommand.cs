@@ -136,12 +136,12 @@ public class UserClickOnScreenCommand : ICommand
 
     public void TraceSprite(Sprite sprite)
     {
-        var gapLength = 3U;
+        var gapLength = 3U; //  "How much difference in pixels in a straight line is considered a gap. This can help smooth out the outline a bit."
         var product = 1f; //  "Product for optimizing the outline based on angle. 1 means no optimization. This value should be kept pretty high if you want to maintain round shapes. Note that some points (e.g. outer angles) are never optimized."
-        var tolerance = 0f; // A higher value results in a simpler line (less points). A positive value close to zero results in a line with little to no reduction. A value of zero or less has no effect.
+        var tolerance = 0.0f; // A higher value results in a simpler line (less points). A positive value close to zero results in a line with little to no reduction. A value of zero or less has no effect.
         ContourTracer tracer = new ContourTracer();
         Texture2D targetTex = sprite.texture;
-        tracer.Trace(targetTex, sprite.pivot, sprite.pixelsPerUnit / 10, gapLength, product);
+        tracer.Trace(targetTex, Vector2Int.zero, 0.99f, gapLength, product);
 
         var path = new List<Vector2>();
         var points = new List<Vector2>();
@@ -152,11 +152,7 @@ public class UserClickOnScreenCommand : ICommand
             tracer.GetPath(i, ref path);
             LineUtility.Simplify(path, tolerance, points);
 
-            //var scaledPoints = new List<Vector2>();
-            //foreach(var point in points)
-            //{
-            //    scaledPoints.Add(new Vector2(point.x * 10, point.y * 10));
-            //}
+            Debug.Log($"Points = {string.Join(",", points)}");
 
             pointsList.Add(points.ToArray());
         }
@@ -256,7 +252,7 @@ public class UserClickOnScreenCommand : ICommand
         }
 
         tex2.Apply();
-
+      
         var newSprite = Sprite.Create(tex2, new Rect(0, 0, tex2.width, tex2.height), new Vector2(0.5f, 0.5f), sprite.pixelsPerUnit);
 
         return newSprite;

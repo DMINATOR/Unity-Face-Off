@@ -218,6 +218,8 @@
         "m_GuidSerialized": "dea33285-bebf-4ca9-8ab4-2d39a43fbe9f"
     },
     "m_Name": "Main Texture",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Texture2D_2c4aeef673554a6397ee8e16aa70b592",
     "m_OverrideReferenceName": "_MainTex",
     "m_GeneratePropertyBlock": true,
@@ -599,6 +601,8 @@
         "m_GuidSerialized": "164aa10c-8dfb-41bc-b8a0-bac0a26322d4"
     },
     "m_Name": "Mask Texture Created",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Boolean_bcf6dd858a57457c8bff96d1fc57822f",
     "m_OverrideReferenceName": "MaskTextureCreated",
     "m_GeneratePropertyBlock": true,
