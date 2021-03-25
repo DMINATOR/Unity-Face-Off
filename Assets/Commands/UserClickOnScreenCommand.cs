@@ -99,7 +99,7 @@ public class UserClickOnScreenCommand : ICommand
 
         var tilemapCollider = _tileMap.GetComponent<TilemapCollider2D>();
         var tilemapRenderer = _tileMap.GetComponent<TilemapRenderer>();
-        var newSprite = CreateNewSpriteAndCutCircleAreaOut(sprite, tilePosition);
+        var newSprite = CreateNewSpriteAndCutCircleAreaOut(sprite, tilePosition, true);
         var newTile = ScriptableObject.CreateInstance<BasicTile>();
 
         //var texture = newSprite.texture;
@@ -136,12 +136,14 @@ public class UserClickOnScreenCommand : ICommand
 
     public void TraceSprite(Sprite sprite)
     {
+        var edge = 0.02f;
+
         var gapLength = 3U; //  "How much difference in pixels in a straight line is considered a gap. This can help smooth out the outline a bit."
         var product = 1f; //  "Product for optimizing the outline based on angle. 1 means no optimization. This value should be kept pretty high if you want to maintain round shapes. Note that some points (e.g. outer angles) are never optimized."
         var tolerance = 0.0f; // A higher value results in a simpler line (less points). A positive value close to zero results in a line with little to no reduction. A value of zero or less has no effect.
         ContourTracer tracer = new ContourTracer();
         Texture2D targetTex = sprite.texture;
-        tracer.Trace(targetTex, Vector2Int.zero, 0.99f, gapLength, product);
+        tracer.Trace(targetTex, Vector2Int.zero + new Vector2(-edge, -edge), 1 + edge, gapLength, product);
 
         var path = new List<Vector2>();
         var points = new List<Vector2>();
@@ -184,7 +186,7 @@ public class UserClickOnScreenCommand : ICommand
         throw new System.NotImplementedException();
     }
 
-    private Sprite CreateNewSpriteAndCutCircleAreaOut(Sprite sprite, Vector3Int tilePosition)
+    private Sprite CreateNewSpriteAndCutCircleAreaOut(Sprite sprite, Vector3Int tilePosition, bool randomColor)
     {
         Texture2D tex = sprite.texture;
 
@@ -219,7 +221,6 @@ public class UserClickOnScreenCommand : ICommand
         {
             for (var y = 0; y < tex2.height; y++)
             {
-                var color = tex.GetPixel((int)(x + sprite.textureRect.x), (int)(y + sprite.textureRect.y));
                 //color.a = 1.0f;
                 //if( color.a >= 0.8f )
                 //{
@@ -244,10 +245,16 @@ public class UserClickOnScreenCommand : ICommand
                     }
                 }
 
-                //tex2.SetPixel(x, y, color);
-
-                // Random color
-                tex2.SetPixel(x, y, newColor);
+                if( randomColor )
+                {
+                    // Random color
+                    tex2.SetPixel(x, y, newColor);
+                }
+                else
+                {
+                    var color = tex.GetPixel((int)(x + sprite.textureRect.x), (int)(y + sprite.textureRect.y));
+                    tex2.SetPixel(x, y, color);
+                }
             }
         }
 
