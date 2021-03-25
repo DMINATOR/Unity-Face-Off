@@ -99,7 +99,7 @@ public class UserClickOnScreenCommand : ICommand
 
         var tilemapCollider = _tileMap.GetComponent<TilemapCollider2D>();
         var tilemapRenderer = _tileMap.GetComponent<TilemapRenderer>();
-        var newSprite = CreateNewSpriteAndCutCircleAreaOut(sprite, tilePosition, true);
+        var newSprite = CreateNewSpriteAndCutCircleAreaOut(sprite, tilePosition, false);
         var newTile = ScriptableObject.CreateInstance<BasicTile>();
 
         //var texture = newSprite.texture;
