@@ -217,15 +217,27 @@ public class UserClickOnScreenCommand : ICommand
         var multX = 1.0f / tex2.width;
         var multY = 1.0f / tex2.height;
 
+        // Get texture rect from sprite as is
+        var sourceTextureRect = sprite.textureRect;
+
+        // If spite texture rect is new one, then use a smaller portion instead
+        if( tex.width == (int)sprite.pixelsPerUnit)
+        {
+            sourceTextureRect = new Rect(0, 0, tex2.width, tex2.height);
+        }
+
         for (var x = 0; x < tex2.width; x++)
         {
             for (var y = 0; y < tex2.height; y++)
             {
-                //color.a = 1.0f;
-                //if( color.a >= 0.8f )
-                //{
-                //    color = Color.black;
-                //}
+                var color = tex.GetPixel((int)(x + sourceTextureRect.x), (int)(y + sourceTextureRect.y));
+
+                if (color.a <= 0.01f)
+                {
+                    // Clear the area
+                    tex2.SetPixel(x, y, new Color(0, 0, 0, 0));
+                    continue;
+                }
 
                 var localPoint = new Vector3(multX * x, multY * y);
                 var worldPosition = localPoint + tileWorldPosition;
@@ -237,9 +249,7 @@ public class UserClickOnScreenCommand : ICommand
                     // Only if we are within a circle magnitude
                     if ( distance <= centerCircleRadius)
                     {
-                        // Specific color
-                        //tex2.SetPixel(x, y, Color.black);
-                        //newColor.a = 0.0f;
+                        // Clear the area
                         tex2.SetPixel(x, y, new Color(0,0,0,0));
                         continue;
                     }
@@ -252,15 +262,16 @@ public class UserClickOnScreenCommand : ICommand
                 }
                 else
                 {
-                    var color = tex.GetPixel((int)(x + sprite.textureRect.x), (int)(y + sprite.textureRect.y));
+                    // Color from the source
                     tex2.SetPixel(x, y, color);
                 }
             }
         }
 
         tex2.Apply();
-      
-        var newSprite = Sprite.Create(tex2, new Rect(0, 0, tex2.width, tex2.height), new Vector2(0.5f, 0.5f), sprite.pixelsPerUnit);
+
+        var newTextureRect = new Rect(0, 0, tex2.width, tex2.height);
+        var newSprite = Sprite.Create(tex2, newTextureRect, new Vector2(0.5f, 0.5f), sprite.pixelsPerUnit);
 
         return newSprite;
     }
