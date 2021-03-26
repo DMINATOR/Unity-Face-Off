@@ -156,7 +156,10 @@ public class UserClickOnScreenCommand : ICommand
 
             Debug.Log($"Points = {string.Join(",", points)}");
 
-            pointsList.Add(points.ToArray());
+            if( points.Count > 2 )
+            {
+                pointsList.Add(points.ToArray());
+            }
         }
 
         sprite.OverridePhysicsShape(pointsList);
